@@ -1,0 +1,502 @@
+<div class = "interface">
+    <!-- YOUR HTML BEGINS -->
+    <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
+
+    <crowd-form>
+        <crowd-instructions link-text="View instructions" link-type="button">
+            <short-summary>
+            <p>In this task, you are given a five second driving video and asked to choose ALL the possible actions the driver can make next according to U.S. traffic rules.
+            Only consider the last frame of the video in your decision. </p>
+            <ul>
+                <li>Do not presume what the driver in the video is thinking. Choose your own decision.</li>
+                <li>Do not choose reasons irrelevant to your action.</li>
+                <li>Do not consider long-time decisions. Only consider the moment at the last frame of the video.</li>
+                <li>Pay close attention to road conditions and traffic signs</li>
+            </ul>
+            </short-summary>
+
+        </crowd-instructions>
+        <h2>&nbsp;&nbsp;&nbsp;Imagine you are the driver and the video below is what you see through the windshield.</h2>
+        <div class = "wrapper">
+            <div class = "task">
+                <video controls width="700" height="400" autoplay>
+                    <source src=${videos}>
+                </video>
+            </div>
+            <div id = "response">
+                <div id = "elem1">
+                    <div id = "forward">
+                        <h3 id = "prompt">At the END of the video, can the driver immediately</h3>
+                        <h2 id = "forward-text">MOVE FORWARD (ACCELERATE)?</h2>
+                        <div id = "buttonContainer">
+                            <crowd-radio-group onclick = "explain()">
+                                <crowd-radio-button id = "forward-yes" name = "actions" value = "move-forward">Yes</crowd-radio-button>
+                                <crowd-radio-button id = "forward-no" name = "no">No</crowd-radio-button>
+                            </crowd-button-group>
+                        </div>
+                        <div id = "forward-explain" onclick = "check()">
+                            <hr>
+                            <h2 id = "forward-explain-text">Why? (Select ALL possible explanations)</h2>
+                            <div id = "ex-advance">
+                                <div><crowd-checkbox name="explanations" value="follow-traffic"> Follow Traffic (cars in the front) </crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="road-clear"> Road is clear (no obvious car in the front) </crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="green-light"> Traffic light is green or yellow </crowd-checkbox></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id = "elem2">
+                    <div id = "stop">
+                        <h3 id = "prompt">At the END of the video, should the driver immediately</h3>
+                        <h2 id = "forward-text">STOP or SLOW DOWN?</h2>
+                        <div id = "buttonContainer">
+                            <crowd-radio-group onclick = "explainStop()">
+                                <crowd-radio-button id = "stop-yes" name = "actions" value = "stop">Yes</crowd-radio-button>
+                                <crowd-radio-button id = "stop-no" name = "no">No</crowd-radio-button>
+                            </crowd-button-group>
+                        </div>
+                        <div id = "stop-explain" onclick = "checkStop()">
+                            <hr>
+                            <h2 id = "forward-explain-text">Why? (Select ALL possible explanations)</h2>
+                            <div id = "ex-stop">
+                                <div><crowd-checkbox name="explanations" value="red-light">Traffic light is red or yellow</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="traffic-sign">Traffic sign (e.g. stop sign, no enter, etc.)</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-car">Obstacles: car</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-ped">Obstacles: pedestrian</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-bike">Obstacles: rider (bicycle, motorcycle, etc.)</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-other">Obstacles: other</crowd-checkbox></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id = "elem3">
+                    <div id = "left">
+                        <h3 id = "prompt">At the END of the video, can the driver immediately</h3>
+                        <h2 id = "forward-text">TURN LEFT or CHANGE TO LEFT LANE?</h2>
+                        <div id = "buttonContainer">
+                            <crowd-radio-group onclick = "explainLeft()">
+                                <crowd-radio-button id = "left-yes" name = "actions" value = "left">Yes</crowd-radio-button>
+                                <crowd-radio-button id = "left-no" name = "no">No</crowd-radio-button>
+                            </crowd-button-group>
+                        </div>
+                        <div id = "left-explain" onclick = "checkLeft()">
+                            <hr>
+                            <h2 id = "forward-explain-text">Why? (Select ALL possible explanations)</h2>
+                            <div id = "ex-left">
+                                <div><crowd-checkbox name="explanations" value="left-lane">In left turn lane</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="left-turn-allowed">Traffic light or sign allow left turn</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="follow-car-left">Front car turned left</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="left-lane-clear">Left lane is clear</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="left-road-clear">Left road is clear</crowd-checkbox></div>
+                            </div>
+                            <div id = "ex-left-no">
+                                <div><crowd-checkbox name="explanations" value="not-left-turn-lane">Not in left turn lane</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="no-left-lane-road">No left lane or road</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-solid-lines">Can't cross solid/yellow lines</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="traffic-sign">Traffic sign (no left turn, stop, etc.)</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-car">Obstacles: car</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-ped">Obstacles: pedestrian</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-bike">Obstacles: rider (bicycle, motorcycle, etc.)</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-other">Obstacles: other</crowd-checkbox></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id = "elem4">
+                    <div id = "right">
+                        <h3 id = "prompt">At the END of the video, can the driver immediately</h3>
+                        <h2 id = "forward-text">TURN RIGHT or CHANGE TO RIGHT LANE?</h2>
+                        <div id = "buttonContainer">
+                            <crowd-radio-group onclick = "explainRight()">
+                                <crowd-radio-button id = "right-yes" name = "actions" value = "right">Yes</crowd-radio-button>
+                                <crowd-radio-button id = "right-no" name = "no">No</crowd-radio-button>
+                            </crowd-button-group>
+                        </div>
+                        <div id = "right-explain" onclick = "checkRight()">
+                            <hr>
+                            <h2 id = "forward-explain-text">Why? (Select ALL possible explanations)</h2>
+                            <div id = "ex-right">
+                                <div><crowd-checkbox name="explanations" value="right-lane">In right turn lane</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="right-turn-allowed">Traffic light or sign allow right turn</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="follow-car-right">Front car turned right</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="right-lane-clear">Right lane is clear</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="right-road-clear">Right road is clear</crowd-checkbox></div>
+                            </div>
+                            <div id = "ex-right-no">
+                                <div><crowd-checkbox name="explanations" value="not-right-turn-lane">Not in right turn lane</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="no-right-lane-road">No right lane or road</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-solid-lines">Can't cross solid/yellow lines</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="traffic-sign">Traffic sign (no right turn, stop, etc.)</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-car">Obstacles: car</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-ped">Obstacles: pedestrian</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-bike">Obstacles: rider (bicycle, motorcycle, etc.)</crowd-checkbox></div>
+                                <div><crowd-checkbox name="explanations" value="obstacle-other">Obstacles: other</crowd-checkbox></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id = "next" onclick = "advanceStop()">Next</div>
+                <div id = "nextStop" onclick = "advanceLeft()">Next</div>
+                <div id = "nextLeft" onclick = "advanceRight()">Next</div>
+                <div id = "submit"><crowd-button form-action = "submit" style = "color: red">Submit</crowd-button></div>
+            </div>
+        </div>
+    </crowd-form>
+
+    <script>
+
+        function advanceLeft() {
+            document.querySelector("#elem2").style.display = "none";
+            document.querySelector("#elem3").style.display = "block";
+            document.querySelector("#nextStop").style.display = "none";
+        }
+
+        function advanceStop() {
+            document.querySelector("#elem1").style.display = "none";
+            document.querySelector("#elem2").style.display = "block";
+            document.querySelector("#next").style.display = "none";
+        }
+        
+        function advanceRight() {
+            document.querySelector("#elem3").style.display = "none";
+            document.querySelector("#elem4").style.display = "block";
+            document.querySelector("#nextLeft").style.display = "none";
+        }
+        
+        function explain() {
+            const yes = document.querySelector("#forward-yes");
+            if (yes.checked) {
+                document.querySelector("#forward-explain").style.display = "block";
+                document.querySelector("#next").style.display = "none";
+                const explain = document.querySelectorAll("#ex-advance > div > crowd-checkbox");
+                explain.forEach((item) => {
+                    item.checked = false;
+                })
+            } else {
+                document.querySelector("#forward-explain").style.display = "none";
+                document.querySelector("#next").style.display = "block";
+                const explain = document.querySelectorAll("#ex-advance > div > crowd-checkbox");
+                explain.forEach((item) => {
+                    item.checked = false;
+                })
+            }
+        }
+        
+        function explainStop() {
+            const yes = document.querySelector("#stop-yes");
+            if (yes.checked) {
+                document.querySelector("#stop-explain").style.display = "block";
+                document.querySelector("#nextStop").style.display = "none";
+                const explain = document.querySelectorAll("#ex-stop > div > crowd-checkbox");
+                explain.forEach((item) => {
+                    item.checked = false;
+                })
+            } else {
+                document.querySelector("#stop-explain").style.display = "none";
+                document.querySelector("#nextStop").style.display = "block";
+                const explain = document.querySelectorAll("#ex-left > div > crowd-checkbox");
+                explain.forEach((item) => {
+                    item.checked = false;
+                })
+            }
+        }
+        
+        function explainLeft() {
+            const yes = document.querySelector("#left-yes");
+            document.querySelector("#left-explain").style.display = "block";
+            if (yes.checked) {
+                document.querySelector("#ex-left").style.display = "block";
+                document.querySelector("#ex-left-no").style.display = "none";
+                document.querySelector("#nextLeft").style.display = "none";
+                const explain = document.querySelectorAll("#ex-left > div > crowd-checkbox");
+                explain.forEach((item) => {
+                    item.checked = false;
+                })
+            } else {
+                document.querySelector("#ex-left-no").style.display = "block";
+                document.querySelector("#ex-left").style.display = "none";
+                document.querySelector("#nextLeft").style.display = "none";
+                const explain = document.querySelectorAll("#ex-left-no > div > crowd-checkbox");
+                explain.forEach((item) => {
+                    item.checked = false;
+                })
+            }
+        }
+        
+        function explainRight() {
+            const yes = document.querySelector("#right-yes");
+            document.querySelector("#right-explain").style.display = "block";
+            if (yes.checked) {
+                document.querySelector("#ex-right").style.display = "block";
+                document.querySelector("#ex-right-no").style.display = "none";
+                document.querySelector("#submit").style.display = "none";
+                const explain = document.querySelectorAll("#ex-right > div > crowd-checkbox");
+                explain.forEach((item) => {
+                    item.checked = false;
+                })
+            } else {
+                document.querySelector("#ex-right-no").style.display = "block";
+                document.querySelector("#ex-right").style.display = "none";
+                document.querySelector("#submit").style.display = "none";
+                const explain = document.querySelectorAll("#ex-right-no > div > crowd-checkbox");
+                explain.forEach((item) => {
+                    item.checked = false;
+                })
+            }
+        }
+        
+        function check() {
+            var filled = false;
+            const explain = document.querySelectorAll("#ex-advance > div > crowd-checkbox");
+            explain.forEach((item) => {
+                if (item.checked) {
+                    filled = true;
+                }
+            })
+            showNext(filled);
+        }
+        
+        function checkStop() {
+            var filled = false;
+            const explain = document.querySelectorAll("#ex-stop > div > crowd-checkbox");
+            explain.forEach((item) => {
+                if (item.checked) {
+                    filled = true;
+                }
+            })
+            showNextStop(filled);
+        }
+        
+        function checkLeft(yes) {
+            var filled = false;
+            const explain = document.querySelectorAll("#ex-left > div > crowd-checkbox");
+            explain.forEach((item) => {
+                if (item.checked) {
+                    filled = true;
+                }
+            })
+            const explain_no = document.querySelectorAll("#ex-left-no > div > crowd-checkbox");
+            explain_no.forEach((item) => {
+                if (item.checked) {
+                    filled = true;
+                }
+            })
+            showNextLeft(filled);
+        }
+        
+        function checkRight() {
+            var filled = false;
+            const explain = document.querySelectorAll("#ex-right > div > crowd-checkbox");
+            explain.forEach((item) => {
+                if (item.checked) {
+                    filled = true;
+                }
+            })
+            const explain_no = document.querySelectorAll("#ex-right-no > div > crowd-checkbox");
+            explain_no.forEach((item) => {
+                if (item.checked) {
+                    filled = true;
+                }
+            })
+            showNextRight(filled);
+        }
+        
+        
+        function showNext(filled) {
+            if (filled) {
+                document.querySelector("#next").style.display = "block";
+            } else {
+                document.querySelector("#next").style.display = "none";
+            }
+        }
+        
+        function showNextStop(filled) {
+            if (filled) {
+                document.querySelector("#nextStop").style.display = "block";
+            } else {
+                document.querySelector("#nextStop").style.display = "none";
+            }
+        }
+        
+        function showNextLeft(filled) {
+            if (filled) {
+                document.querySelector("#nextLeft").style.display = "block";
+            } else {
+                document.querySelector("#nextLeft").style.display = "none";
+            }
+        }
+        
+        function showNextRight(filled) {
+            if (filled) {
+                document.querySelector("#submit").style.display = "block";
+            } else {
+                document.querySelector("#submit").style.display = "none";
+            }
+        }
+    </script>
+
+
+    <style>
+
+        .task {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            background: #e5e5e5;
+            flex: 70%;
+        }
+        
+        #submit {
+            padding-top: 10px;
+            display: none;
+        }
+        
+        #elem2 {
+            display: none;
+        }
+        
+        #elem3 {
+            display: none;
+        }
+        
+        #elem4 {
+            display: none;
+        }
+        
+        #response {
+            display: flex;
+            flex-direction: column;
+            flex: 30%;
+            padding: 15px 15px;
+        }
+        
+        #buttonContainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        #forward {
+            display: block;
+        }
+        
+        #forward-explain {
+            display: none;
+        }
+
+        #forward-text {
+            color: red;
+            text-align: center;
+        }
+        
+        #forward-explain-text {
+            text-align: center;
+        }
+        
+        #stop-explain {
+            display: none;
+        }
+        
+        #left-explain {
+            display: none;
+        }
+
+        #ex-left-no {
+            display: none;
+        }
+
+        #ex-right-no {
+            display: none;
+        }
+        
+        #right-explain {
+            display: none;
+        }
+        
+        crowd-radio-group {
+            padding-bottom: 15px;
+        }
+        
+        #prompt {
+            text-align: center;
+        }
+
+        #submit {
+            padding-top: 10px;
+            display: none;
+        }
+        
+        #next {
+            display: none;
+            padding: 5px 0px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            background-color: #378DC4;
+            border-radius: 5px;
+            cursor: hand;
+        }
+        
+        #nextStop {
+            display: none;
+            padding: 5px 0px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            background-color: #378DC4;
+            border-radius: 5px;
+            cursor: hand;
+        }
+        
+        #nextLeft {
+            display: none;
+            padding: 5px 0px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            background-color: #378DC4;
+            border-radius: 5px;
+            cursor: hand;
+        }
+
+
+        #ex-advance {
+            padding-bottom: 20px;
+        }
+        
+        #ex-stop {
+            padding-bottom: 20px;
+        }
+        
+        #ex-left {
+            padding-bottom: 20px;
+        }
+
+        #ex-left-no {
+            padding-bottom: 20px;
+        }
+        
+        #ex-right {
+            padding-bottom: 20px;
+        }
+        
+        #ex-right-no {
+            padding-bottom: 20px;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            width: 100%;
+            height: 100%;
+            padding: 10px 0px;
+        }
+        
+        crowd-checkbox {
+            padding: 5px 0px;
+        }
+        
+    </style>
+    <!-- YOUR HTML ENDS -->
+</div>
